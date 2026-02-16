@@ -41,7 +41,7 @@ export default function ChatView() {
   const [isTyping, setIsTyping] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const handleSend = useCallback(() => {
+  const handleSend = useCallback(async () => {
     if (!input.trim()) return
 
     const userMsg: Message = {
@@ -52,23 +52,49 @@ export default function ChatView() {
     }
     addMessage(userMsg)
     setInput("")
-
-    // Simulate assistant response
     setIsTyping(true)
-    setTimeout(() => {
+
+    try {
+      // Build message history for context
+      const apiMessages = [...messages, userMsg].map((m) => ({
+        role: m.role,
+        content: m.content,
+      }))
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages, model: selectedModel }),
+      })
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Request failed" }))
+        throw new Error(err.error ?? `HTTP ${res.status}`)
+      }
+
+      const data = await res.json()
       const assistantMsg: Message = {
         id: `msg-${Date.now() + 1}`,
         role: "assistant",
-        content: `Das ist eine Demo-Antwort auf deine Nachricht. In der Produktionsversion wurde hier die echte KI-Antwort von ${models.find((m) => m.id === selectedModel)?.name ?? selectedModel} erscheinen.`,
+        content: data.content,
         timestamp: new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }),
-        model: selectedModel,
-        tokens: { input: 42, output: 87 },
-        cost: 0.003,
+        model: data.model ?? selectedModel,
+        tokens: data.usage ? { input: data.usage.input, output: data.usage.output } : undefined,
       }
       addMessage(assistantMsg)
+    } catch (error) {
+      const errorMsg: Message = {
+        id: `msg-${Date.now() + 1}`,
+        role: "assistant",
+        content: `Fehler: ${error instanceof Error ? error.message : "Verbindung fehlgeschlagen"}. Prufe deine OPENROUTER_API_KEY in .env.local.`,
+        timestamp: new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }),
+        model: selectedModel,
+      }
+      addMessage(errorMsg)
+    } finally {
       setIsTyping(false)
-    }, 1500)
-  }, [input, selectedModel, addMessage])
+    }
+  }, [input, selectedModel, addMessage, messages])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
