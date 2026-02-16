@@ -1,81 +1,44 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { X, Bot, ArrowUp, CheckCircle2, Loader2, XCircle, Sparkles } from "lucide-react"
+import { useState, useEffect } from "react"
+import { X, Bot, ArrowUp, CheckCircle2, Loader2, XCircle } from "lucide-react"
 import { useAppStore } from "@/lib/store"
-import { classifyTaskForAgent } from "@/lib/agents/executor"
 
-interface PanelTask {
+interface AgentTask {
   id: string
   description: string
   status: "running" | "done" | "error"
 }
 
+const demoTasks: AgentTask[] = [
+  { id: "t1", description: "Analyzing input data...", status: "done" },
+  { id: "t2", description: "Generating content draft...", status: "done" },
+  { id: "t3", description: "Running quality check...", status: "running" },
+]
+
 export default function AgentPanel() {
-  const { agentPanelOpen, toggleAgentPanel, agents, updateAgentStatus } = useAppStore()
+  const { agentPanelOpen, toggleAgentPanel, agents } = useAppStore()
   const [agentInput, setAgentInput] = useState("")
-  const [tasks, setTasks] = useState<PanelTask[]>([])
-  const [messages, setMessages] = useState<{ role: string; text: string; agent?: string }[]>([
-    { role: "agent", text: "Hallo! Ich bin bereit Aufgaben entgegenzunehmen. Was soll ich tun?" },
+  const [tasks, setTasks] = useState<AgentTask[]>(demoTasks)
+  const [messages, setMessages] = useState<{ role: string; text: string }[]>([
+    { role: "agent", text: "Hallo! Ich bin Aria, dein Content-Agent. Was soll ich fur dich erstellen?" },
   ])
-  const [isProcessing, setIsProcessing] = useState(false)
 
-  const handleSend = useCallback(async () => {
-    if (!agentInput.trim() || isProcessing) return
-    const userText = agentInput.trim()
-    setAgentInput("")
-    setMessages((prev) => [...prev, { role: "user", text: userText }])
-    setIsProcessing(true)
-
-    // Classify which agent should handle this
-    const classification = classifyTaskForAgent(userText, agents)
-    const targetAgent = agents.find((a) => a.id === classification.agentId)
-
-    const taskId = `task-${Date.now()}`
-    setTasks((prev) => [...prev, { id: taskId, description: userText, status: "running" }])
-
-    if (targetAgent) {
-      updateAgentStatus(targetAgent.id, "busy")
-    }
-
-    try {
-      const res = await fetch("/api/agents/execute", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          agentId: targetAgent?.id ?? "agent-aria",
-          input: userText,
-          systemPrompt: targetAgent?.systemPrompt ?? "Du bist ein hilfreicher Assistent. Antworte kurz und praegnant.",
-          preferredModel: targetAgent?.preferredModel ?? "auto",
-        }),
-      })
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
-      const data = await res.json()
-      setMessages((prev) => [
-        ...prev,
-        { role: "agent", text: data.content, agent: targetAgent?.name },
-      ])
-      setTasks((prev) => prev.map((t) => t.id === taskId ? { ...t, status: "done" } : t))
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "agent", text: "Fehler bei der Ausfuehrung. Pruefe deine OPENROUTER_API_KEY." },
-      ])
-      setTasks((prev) => prev.map((t) => t.id === taskId ? { ...t, status: "error" } : t))
-    } finally {
-      if (targetAgent) {
-        updateAgentStatus(targetAgent.id, "online")
-      }
-      setIsProcessing(false)
-    }
-  }, [agentInput, isProcessing, agents, updateAgentStatus])
+  // Auto-complete running tasks (demo)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.status === "running" ? { ...t, status: "done" } : t
+        )
+      )
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [])
 
   if (!agentPanelOpen) return null
 
-  const activeAgent = agents.find((a) => a.status === "online" || a.status === "busy")
-  const onlineCount = agents.filter((a) => a.status === "online" || a.status === "busy").length
+  const activeAgent = agents.find((a) => a.status === "online" || a.status === "busy") ?? agents[0]
 
   return (
     <div
@@ -99,10 +62,10 @@ export default function AgentPanel() {
           </div>
           <div>
             <span className="text-[13px] font-semibold" style={{ color: "var(--text-primary)" }}>
-              Agent Panel
+              {activeAgent?.name ?? "Agent"}
             </span>
             <span className="ml-2 text-[10px]" style={{ color: "var(--success)" }}>
-              {onlineCount} online
+              online
             </span>
           </div>
         </div>
@@ -116,29 +79,27 @@ export default function AgentPanel() {
       </div>
 
       {/* Tasks */}
-      {tasks.length > 0 && (
-        <div className="px-3 py-2" style={{ borderBottom: "1px solid var(--border-default)" }}>
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.05em]" style={{ color: "var(--text-muted)" }}>
-            Tasks
-          </p>
-          <div className="space-y-1">
-            {tasks.slice(-5).map((task) => (
-              <div key={task.id} className="flex items-center gap-2 rounded-md px-2 py-1.5">
-                {task.status === "running" ? (
-                  <Loader2 size={12} className="animate-spin flex-shrink-0" style={{ color: "var(--warning)" }} />
-                ) : task.status === "done" ? (
-                  <CheckCircle2 size={12} className="flex-shrink-0" style={{ color: "var(--success)" }} />
-                ) : (
-                  <XCircle size={12} className="flex-shrink-0" style={{ color: "var(--danger)" }} />
-                )}
-                <span className="truncate text-[12px]" style={{ color: "var(--text-secondary)" }}>
-                  {task.description}
-                </span>
-              </div>
-            ))}
-          </div>
+      <div className="px-3 py-2" style={{ borderBottom: "1px solid var(--border-default)" }}>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.05em]" style={{ color: "var(--text-muted)" }}>
+          Tasks
+        </p>
+        <div className="space-y-1">
+          {tasks.map((task) => (
+            <div key={task.id} className="flex items-center gap-2 rounded-md px-2 py-1.5">
+              {task.status === "running" ? (
+                <Loader2 size={12} className="animate-spin flex-shrink-0" style={{ color: "var(--warning)" }} />
+              ) : task.status === "done" ? (
+                <CheckCircle2 size={12} className="flex-shrink-0" style={{ color: "var(--success)" }} />
+              ) : (
+                <XCircle size={12} className="flex-shrink-0" style={{ color: "var(--danger)" }} />
+              )}
+              <span className="text-[12px]" style={{ color: "var(--text-secondary)" }}>
+                {task.description}
+              </span>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-3 py-3">
@@ -157,21 +118,10 @@ export default function AgentPanel() {
                   color: "var(--text-primary)",
                 }}
               >
-                {msg.agent && (
-                  <p className="mb-0.5 text-[10px] font-medium" style={{ color: "var(--brand-purple)" }}>
-                    {msg.agent}
-                  </p>
-                )}
-                <span className="whitespace-pre-wrap">{msg.text}</span>
+                {msg.text}
               </div>
             </div>
           ))}
-          {isProcessing && (
-            <div className="flex items-center gap-2">
-              <Loader2 size={12} className="animate-spin" style={{ color: "var(--brand-purple)" }} />
-              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>Agent arbeitet...</span>
-            </div>
-          )}
         </div>
       </div>
 
@@ -187,7 +137,15 @@ export default function AgentPanel() {
             onChange={(e) => setAgentInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && agentInput.trim()) {
-                handleSend()
+                setMessages((prev) => [...prev, { role: "user", text: agentInput.trim() }])
+                const userText = agentInput.trim()
+                setAgentInput("")
+                setTimeout(() => {
+                  setMessages((prev) => [
+                    ...prev,
+                    { role: "agent", text: `Ich arbeite an "${userText}". Einen Moment bitte...` },
+                  ])
+                }, 800)
               }
             }}
             placeholder="Agent beauftragen..."
