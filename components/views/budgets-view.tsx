@@ -74,7 +74,7 @@ export default function BudgetsView() {
         {models.map((m) => (
           <div
             key={m.name}
-            className="flex items-center rounded-xl px-5 py-4 transition-all duration-200 hover:-translate-y-px"
+            className="card-hover flex items-center rounded-xl px-5 py-4"
             style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border-default)" }}
           >
             <div className="mr-4 w-[120px]">

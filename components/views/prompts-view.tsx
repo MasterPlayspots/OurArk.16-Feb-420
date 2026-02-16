@@ -33,7 +33,7 @@ export default function PromptsView() {
           return (
             <div
               key={t.id}
-              className="rounded-xl p-5 transition-all duration-200 hover:-translate-y-px"
+              className="card-hover rounded-xl p-5"
               style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border-default)" }}
             >
               <div className="mb-3 flex items-start justify-between">
@@ -64,18 +64,13 @@ export default function PromptsView() {
                 </span>
                 <div className="flex gap-2">
                   <button
-                    className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+                    className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
                     style={{ color: "var(--text-secondary)", border: "1px solid var(--border-default)" }}
                   >
                     <Eye size={12} /> Vorschau
                   </button>
                   <button
-                    className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-all duration-150 active:scale-[0.97]"
-                    style={{
-                      backgroundColor: "rgba(124,58,237,0.12)",
-                      color: "var(--brand-purple)",
-                      border: "1px solid rgba(124,58,237,0.15)",
-                    }}
+                    className="btn-primary flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px]"
                   >
                     <Play size={12} /> Verwenden
                   </button>

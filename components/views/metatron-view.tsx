@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Hexagon, Bot } from "lucide-react"
 import { useAppStore } from "@/lib/store"
 
@@ -46,7 +47,7 @@ export default function MetatronView() {
             border: "1px solid rgba(124, 58, 237, 0.3)",
           }}
         >
-          <Hexagon size={28} style={{ color: "var(--brand-purple)" }} />
+          <Image src="/oa-logo.svg" alt="OurArk" width={32} height={32} />
         </div>
 
         {/* Connection lines */}
@@ -114,7 +115,7 @@ export default function MetatronView() {
             {agents.map((a) => (
               <tr
                 key={a.id}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3 text-[13px] font-medium" style={{ color: "var(--text-primary)" }}>

@@ -21,7 +21,7 @@ export default function RightSidebar() {
       >
         <button
           onClick={toggleRightSidebar}
-          className="mb-4 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="mb-4 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
           style={{ color: "var(--text-secondary)" }}
         >
           <PanelRightClose size={18} className="rotate-180" />
@@ -71,7 +71,7 @@ export default function RightSidebar() {
         </span>
         <button
           onClick={toggleRightSidebar}
-          className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
           style={{ color: "var(--text-muted)" }}
         >
           <PanelRightClose size={16} />
@@ -91,13 +91,13 @@ export default function RightSidebar() {
             {onlineMembers.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center rounded-lg px-3 py-2 transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+                className="flex items-center rounded-lg px-3 py-2 transition-all duration-200 hover:bg-[rgba(255,255,255,0.03)]"
               >
                 <div className="relative mr-2.5">
                   <div
                     className="flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-semibold"
                     style={{
-                      backgroundColor: "rgba(124, 58, 237, 0.15)",
+                      background: "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(99,102,241,0.2))",
                       color: "var(--brand-purple)",
                     }}
                   >
@@ -135,7 +135,7 @@ export default function RightSidebar() {
             {offlineMembers.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center rounded-lg px-3 py-2 transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+                className="flex items-center rounded-lg px-3 py-2 transition-all duration-200 hover:bg-[rgba(255,255,255,0.03)]"
               >
                 <div className="relative mr-2.5">
                   <div
@@ -173,7 +173,7 @@ export default function RightSidebar() {
             {activeAgents.map((agent) => (
               <div
                 key={agent.id}
-                className="flex items-center rounded-lg px-3 py-2 transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+                className="flex items-center rounded-lg px-3 py-2 transition-all duration-200 hover:bg-[rgba(255,255,255,0.03)]"
               >
                 <div className="relative mr-2.5">
                   <div
@@ -230,7 +230,7 @@ export default function RightSidebar() {
             ].map((notif, i) => (
               <div
                 key={i}
-                className="rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ backgroundColor: "var(--surface)" }}
               >
                 <div className="flex items-start">

@@ -60,7 +60,7 @@ export default function EventLogView() {
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className="rounded-md px-2.5 py-2 text-[11px] font-medium transition-all duration-150"
+              className="rounded-md px-2.5 py-2 text-[11px] font-medium transition-all duration-200"
               style={{
                 backgroundColor: filterSeverity === sev ? "rgba(124,58,237,0.1)" : "var(--surface)",
                 color: filterSeverity === sev ? "var(--brand-purple)" : "var(--text-muted)",
@@ -94,7 +94,7 @@ export default function EventLogView() {
               return (
                 <tr
                   key={e.id}
-                  className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                  className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                   style={{ borderBottom: "1px solid var(--border-subtle)" }}
                 >
                   <td className="px-4 py-3 font-mono text-[12px]" style={{ color: "var(--text-muted)" }}>
