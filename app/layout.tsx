@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 
 const inter = Inter({
@@ -8,12 +8,18 @@ const inter = Inter({
   display: "swap",
 })
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+})
+
 export const metadata: Metadata = {
   title: "OurArk - AI Workspace",
   description:
-    "All-in-One Plattform für Teams, die mit KI arbeiten. Chat, Browser, Agenten-Steuerung, Dokumenten-Management und Team-Kollaboration.",
+    "All-in-One Plattform fur Teams, die mit KI arbeiten. Chat, Browser, Agenten-Steuerung, Dokumenten-Management und Team-Kollaboration.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/oa-logo.svg",
   },
 }
 
@@ -32,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de" className="dark">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

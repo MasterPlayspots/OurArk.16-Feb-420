@@ -63,7 +63,7 @@ export default function ConnectorsView() {
             {connectors.map((c) => (
               <tr
                 key={c.id}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3 text-[13px] font-medium" style={{ color: "var(--text-primary)" }}>

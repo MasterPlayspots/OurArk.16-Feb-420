@@ -42,11 +42,10 @@ export default function AgentPanel() {
 
   return (
     <div
-      className="flex h-full w-80 flex-col"
+      className="flex h-full w-80 flex-col animate-slide-in-right"
       style={{
         backgroundColor: "var(--ground)",
         borderLeft: "1px solid var(--border-default)",
-        animation: "slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
       {/* Header */}
@@ -72,7 +71,7 @@ export default function AgentPanel() {
         </div>
         <button
           onClick={toggleAgentPanel}
-          className="flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="flex h-6 w-6 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
           style={{ color: "var(--text-muted)" }}
         >
           <X size={14} />
@@ -155,24 +154,14 @@ export default function AgentPanel() {
           />
           <button
             disabled={!agentInput.trim()}
-            className="ml-2 flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150 disabled:opacity-30"
-            style={{ backgroundColor: "var(--brand-purple)", color: "#fff" }}
+            className="ml-2 flex h-6 w-6 items-center justify-center rounded-lg transition-all duration-200 disabled:opacity-30 active:scale-95"
+            style={{ background: "linear-gradient(135deg, #7c3aed, #6366f1)", color: "#fff" }}
           >
             <ArrowUp size={13} />
           </button>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes slideInRight {
-          from {
-            transform: translateX(100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </div>
   )
 }

@@ -65,7 +65,7 @@ export default function TelegramView() {
               </code>
               <button
                 onClick={() => setShowToken(!showToken)}
-                className="flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+                className="flex h-8 w-8 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
                 style={{ color: "var(--text-muted)" }}
               >
                 {showToken ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -108,7 +108,7 @@ export default function TelegramView() {
             {commands.map((c) => (
               <tr
                 key={c.cmd}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3">

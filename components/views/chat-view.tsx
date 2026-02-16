@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback } from "react"
+import Image from "next/image"
 import {
   Send,
   Paperclip,
@@ -90,7 +91,7 @@ export default function ChatView() {
           <div className="relative">
             <button
               onClick={() => setShowModelSelector(!showModelSelector)}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-all duration-200 hover:bg-[rgba(255,255,255,0.03)]"
               style={{ color: "var(--text-primary)" }}
             >
               {currentModel?.name}
@@ -113,7 +114,7 @@ export default function ChatView() {
                       setShowModelSelector(false)
                     }}
                     className={cn(
-                      "flex w-full items-center px-3 py-2 text-left text-[13px] transition-all duration-150",
+                      "flex w-full items-center px-3 py-2 text-left text-[13px] transition-all duration-200",
                       selectedModel === m.id
                         ? "bg-[rgba(124,58,237,0.1)]"
                         : "hover:bg-[rgba(255,255,255,0.03)]"
@@ -153,15 +154,15 @@ export default function ChatView() {
         <div className="flex items-center gap-1">
           <button
             onClick={toggleAgentPanel}
-            className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+            className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
             style={{ color: "var(--text-muted)" }}
           >
             <Bot size={15} />
           </button>
-          <button className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]" style={{ color: "var(--text-muted)" }}>
+          <button className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]" style={{ color: "var(--text-muted)" }}>
             <Share2 size={15} />
           </button>
-          <button className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]" style={{ color: "var(--text-muted)" }}>
+          <button className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]" style={{ color: "var(--text-muted)" }}>
             <Pin size={15} />
           </button>
         </div>
@@ -176,7 +177,7 @@ export default function ChatView() {
               className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl animate-orb-glow"
               style={{ backgroundColor: "rgba(124,58,237,0.1)" }}
             >
-              <Bot size={32} style={{ color: "var(--brand-purple)" }} />
+              <Image src="/oa-logo.svg" alt="OurArk" width={36} height={36} />
             </div>
             <h2 className="mb-2 text-[20px] font-semibold" style={{ color: "var(--text-primary)" }}>
               Neuer Chat
@@ -291,13 +292,13 @@ export default function ChatView() {
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-1">
               <button
-                className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+                className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
                 style={{ color: "var(--text-muted)" }}
               >
                 <Paperclip size={15} />
               </button>
               <button
-                className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+                className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
                 style={{ color: "var(--text-muted)" }}
               >
                 <Mic size={15} />
@@ -310,9 +311,9 @@ export default function ChatView() {
               <button
                 onClick={handleSend}
                 disabled={!input.trim()}
-                className="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-150 disabled:opacity-30"
+                className="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 disabled:opacity-30 active:scale-95"
                 style={{
-                  backgroundColor: input.trim() ? "var(--brand-purple)" : "rgba(124,58,237,0.2)",
+                  background: input.trim() ? "linear-gradient(135deg, #7c3aed, #6366f1)" : "rgba(124,58,237,0.2)",
                   color: "#fff",
                 }}
               >

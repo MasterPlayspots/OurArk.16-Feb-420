@@ -34,7 +34,7 @@ export default function DocumentsView() {
         {collections.map((col) => (
           <div
             key={col.name}
-            className="rounded-xl p-5 transition-all duration-200 hover:-translate-y-px"
+            className="card-hover rounded-xl p-5"
             style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border-default)" }}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -77,7 +77,7 @@ export default function DocumentsView() {
             {documents.map((d) => (
               <tr
                 key={d.id}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3">

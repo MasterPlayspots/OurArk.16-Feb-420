@@ -25,7 +25,7 @@ const nextConfig = {
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js requires unsafe-eval
               "style-src 'self' 'unsafe-inline'", // Tailwind requires unsafe-inline
               "img-src 'self' data: https:",
-              "font-src 'self' data:",
+              "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://openrouter.ai",
               "frame-ancestors 'none'",
               "base-uri 'self'",
