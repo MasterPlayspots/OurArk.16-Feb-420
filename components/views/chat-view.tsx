@@ -20,9 +20,11 @@ import { useAppStore } from "@/lib/store"
 import type { Message } from "@/lib/types"
 
 const models = [
+  { id: "auto", name: "Auto (Smart)", provider: "OurArk" },
   { id: "gpt-4o", name: "GPT-4o", provider: "OpenAI" },
-  { id: "claude-3.5", name: "Claude 3.5 Sonnet", provider: "Anthropic" },
+  { id: "claude-3.5-sonnet", name: "Claude 3.5 Sonnet", provider: "Anthropic" },
   { id: "gpt-4o-mini", name: "GPT-4o Mini", provider: "OpenAI" },
+  { id: "claude-sonnet-4", name: "Claude Sonnet 4", provider: "Anthropic" },
   { id: "mistral-large", name: "Mistral Large", provider: "Mistral" },
 ]
 
@@ -35,7 +37,7 @@ const welcomeMessages = [
 export default function ChatView() {
   const { messages, addMessage, currentConversationId, toggleAgentPanel } = useAppStore()
   const [input, setInput] = useState("")
-  const [selectedModel, setSelectedModel] = useState("gpt-4o")
+  const [selectedModel, setSelectedModel] = useState("auto")
   const [showModelSelector, setShowModelSelector] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -79,6 +81,8 @@ export default function ChatView() {
         timestamp: new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }),
         model: data.model ?? selectedModel,
         tokens: data.usage ? { input: data.usage.input, output: data.usage.output } : undefined,
+        cost: data.cost,
+        routingReason: data.routingReason,
       }
       addMessage(assistantMsg)
     } catch (error) {

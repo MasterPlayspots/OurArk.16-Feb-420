@@ -3,6 +3,7 @@
 import { useAppStore } from "@/lib/store"
 import TabBar from "./tab-bar"
 import AgentPanel from "./agent-panel"
+import ErrorBoundary from "./error-boundary"
 import DashboardView from "./views/dashboard-view"
 import AutomationsView from "./views/automations-view"
 import ConnectorsView from "./views/connectors-view"
@@ -15,6 +16,7 @@ import WorkspaceView from "./views/workspace-view"
 import TelegramView from "./views/telegram-view"
 import SettingsView from "./views/settings-view"
 import ChatView from "./views/chat-view"
+import AgentBuilderView from "./views/agent-builder-view"
 
 function ViewRouter() {
   const { currentView } = useAppStore()
@@ -44,6 +46,8 @@ function ViewRouter() {
       return <SettingsView />
     case "chat":
       return <ChatView />
+    case "agent-builder":
+      return <AgentBuilderView />
     default:
       return <DashboardView />
   }
@@ -58,7 +62,9 @@ export default function ContentArea() {
       <TabBar />
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-1 overflow-y-auto">
-          <ViewRouter />
+          <ErrorBoundary>
+            <ViewRouter />
+          </ErrorBoundary>
         </div>
         <AgentPanel />
       </div>
