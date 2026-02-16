@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
-import { routeToModel, AVAILABLE_MODELS } from "@/lib/llm-router"
+
+// OpenRouter model ID mapping
+const MODEL_MAP: Record<string, string> = {
+  "gpt-4o": "openai/gpt-4o",
+  "claude-3.5": "anthropic/claude-3.5-sonnet",
+  "gpt-4o-mini": "openai/gpt-4o-mini",
+  "mistral-large": "mistralai/mistral-large-latest",
+}
 
 const chatRequestSchema = z.object({
   messages: z.array(
@@ -10,8 +17,6 @@ const chatRequestSchema = z.object({
     })
   ).min(1).max(100),
   model: z.string(),
-  agentId: z.string().optional(),
-  useSmartRouting: z.boolean().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -33,22 +38,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { messages, model, useSmartRouting } = parsed.data
-
-    // Smart routing: auto-select best model for the task
-    let openRouterId: string
-    let routingReason = ""
-
-    if (model === "auto" || useSmartRouting) {
-      const lastUserMessage = messages.filter((m) => m.role === "user").pop()?.content ?? ""
-      const routing = routeToModel(lastUserMessage, messages.length)
-      openRouterId = routing.model.openRouterId
-      routingReason = routing.reason
-    } else {
-      // Direct model mapping
-      const found = AVAILABLE_MODELS.find((m) => m.id === model)
-      openRouterId = found?.openRouterId ?? model
-    }
+    const { messages, model } = parsed.data
+    const openRouterModel = MODEL_MAP[model] ?? model
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -59,7 +50,7 @@ export async function POST(request: NextRequest) {
         "X-Title": "OurArk AI Workspace",
       },
       body: JSON.stringify({
-        model: openRouterId,
+        model: openRouterModel,
         messages,
         stream: false,
       }),
@@ -76,24 +67,14 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json()
     const choice = data.choices?.[0]
-    const usage = {
-      input: data.usage?.prompt_tokens ?? 0,
-      output: data.usage?.completion_tokens ?? 0,
-    }
-
-    // Calculate cost
-    const modelInfo = AVAILABLE_MODELS.find((m) => m.openRouterId === openRouterId)
-    const cost = modelInfo
-      ? (usage.input / 1000) * modelInfo.costPer1kInput +
-        (usage.output / 1000) * modelInfo.costPer1kOutput
-      : 0
 
     return NextResponse.json({
       content: choice?.message?.content ?? "",
-      model: data.model ?? openRouterId,
-      usage,
-      cost,
-      routingReason,
+      model: data.model ?? openRouterModel,
+      usage: {
+        input: data.usage?.prompt_tokens ?? 0,
+        output: data.usage?.completion_tokens ?? 0,
+      },
     })
   } catch (error) {
     console.error("Chat API error:", error)

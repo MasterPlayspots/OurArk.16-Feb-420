@@ -1,7 +1,3 @@
-// ============================================================
-// OurArk Type System
-// ============================================================
-
 export type AppView =
   | "chat"
   | "dashboard"
@@ -15,7 +11,6 @@ export type AppView =
   | "workspace"
   | "telegram"
   | "settings"
-  | "agent-builder"
 
 export interface Tab {
   id: string
@@ -43,8 +38,15 @@ export interface Message {
   model?: string
   tokens?: { input: number; output: number }
   cost?: number
-  agentId?: string
-  routingReason?: string
+}
+
+export interface Agent {
+  id: string
+  name: string
+  status: "online" | "busy" | "offline" | "learning"
+  model: string
+  tasks: number
+  description: string
 }
 
 export interface TeamMember {
@@ -98,108 +100,4 @@ export interface KPI {
   trendLabel: string
   icon: string
   color: string
-}
-
-// ============================================================
-// LLM Router Types
-// ============================================================
-
-export type TaskComplexity = "trivial" | "simple" | "moderate" | "complex" | "expert"
-
-export interface LLMModel {
-  id: string
-  openRouterId: string
-  name: string
-  provider: string
-  costPer1kInput: number
-  costPer1kOutput: number
-  maxTokens: number
-  strengths: string[]
-  speed: "fast" | "medium" | "slow"
-  quality: "basic" | "good" | "excellent" | "frontier"
-}
-
-export interface RoutingDecision {
-  model: LLMModel
-  reason: string
-  estimatedCost: number
-  confidence: number
-}
-
-// ============================================================
-// Agent System Types
-// ============================================================
-
-export type AgentStatus = "online" | "busy" | "offline" | "learning" | "error"
-
-export interface AgentCapability {
-  id: string
-  name: string
-  description: string
-}
-
-export interface Agent {
-  id: string
-  name: string
-  status: AgentStatus
-  model: string
-  preferredModel?: string
-  tasks: number
-  description: string
-  systemPrompt: string
-  capabilities: string[]
-  isBuiltIn: boolean
-  ismaster?: boolean
-  maxConcurrentTasks: number
-  totalTokensUsed: number
-  totalCost: number
-  lastActive?: string
-  createdAt: string
-}
-
-export interface AgentTask {
-  id: string
-  agentId: string
-  description: string
-  status: "queued" | "running" | "done" | "error"
-  input: string
-  output?: string
-  model?: string
-  tokens?: { input: number; output: number }
-  cost?: number
-  startedAt?: string
-  completedAt?: string
-  subtasks?: AgentTask[]
-}
-
-export interface AgentExecutionRequest {
-  agentId: string
-  input: string
-  conversationHistory?: { role: string; content: string }[]
-  preferredModel?: string
-}
-
-export interface AgentExecutionResult {
-  taskId: string
-  agentId: string
-  output: string
-  model: string
-  tokens: { input: number; output: number }
-  cost: number
-  duration: number
-  subtasks?: AgentTask[]
-}
-
-// ============================================================
-// Agent Builder Types
-// ============================================================
-
-export interface AgentTemplate {
-  id: string
-  name: string
-  description: string
-  icon: string
-  systemPrompt: string
-  capabilities: string[]
-  suggestedModel: string
 }
