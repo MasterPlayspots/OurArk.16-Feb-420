@@ -115,7 +115,7 @@ export default function DashboardView() {
         {kpis.map((kpi, i) => (
           <div
             key={i}
-            className="rounded-xl p-5 transition-all duration-200 hover:-translate-y-px"
+            className="card-hover rounded-xl p-5"
             style={{
               backgroundColor: "var(--surface)",
               border: "1px solid var(--border-default)",
@@ -162,7 +162,7 @@ export default function DashboardView() {
             <button
               key={link.id}
               onClick={() => navigateTo(link.id)}
-              className="flex items-center rounded-xl px-4 py-3 transition-all duration-200 hover:-translate-y-px active:scale-[0.97]"
+              className="card-hover flex items-center rounded-xl px-4 py-3 active:scale-[0.97]"
               style={{
                 backgroundColor: "var(--surface)",
                 border: "1px solid var(--border-default)",

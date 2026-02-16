@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import {
   Search,
   Plus,
@@ -83,7 +84,7 @@ function SidebarSection({
     <div className="mb-1">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.05em] transition-colors duration-150"
+        className="flex w-full items-center px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.05em] transition-colors duration-200"
         style={{ color: "var(--text-muted)" }}
       >
         {open ? <ChevronDown size={12} className="mr-1.5" /> : <ChevronRight size={12} className="mr-1.5" />}
@@ -122,71 +123,43 @@ export default function LeftSidebar() {
       >
         <button
           onClick={toggleLeftSidebar}
-          className="mb-4 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="mb-4 flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 hover:bg-[rgba(124,58,237,0.08)]"
           style={{ color: "var(--text-secondary)" }}
         >
           <PanelLeftClose size={18} className="rotate-180" />
         </button>
-        <button
-          onClick={() => navigateTo("dashboard")}
-          className={cn(
-            "mb-2 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150",
-            currentView === "dashboard"
-              ? "bg-[rgba(124,58,237,0.1)]"
-              : "hover:bg-[rgba(255,255,255,0.05)]"
-          )}
-          style={{ color: currentView === "dashboard" ? "var(--brand-purple)" : "var(--text-secondary)" }}
-        >
-          <LayoutDashboard size={18} />
-        </button>
-        <button
-          onClick={() => navigateTo("chat")}
-          className={cn(
-            "mb-2 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150",
-            currentView === "chat"
-              ? "bg-[rgba(124,58,237,0.1)]"
-              : "hover:bg-[rgba(255,255,255,0.05)]"
-          )}
-          style={{ color: currentView === "chat" ? "var(--brand-purple)" : "var(--text-secondary)" }}
-        >
-          <MessageSquare size={18} />
-        </button>
-        <button
-          onClick={() => navigateTo("automations")}
-          className={cn(
-            "mb-2 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150",
-            currentView === "automations"
-              ? "bg-[rgba(124,58,237,0.1)]"
-              : "hover:bg-[rgba(255,255,255,0.05)]"
-          )}
-          style={{ color: currentView === "automations" ? "var(--brand-purple)" : "var(--text-secondary)" }}
-        >
-          <Zap size={18} />
-        </button>
-        <button
-          onClick={() => navigateTo("connectors")}
-          className={cn(
-            "mb-2 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150",
-            currentView === "connectors"
-              ? "bg-[rgba(124,58,237,0.1)]"
-              : "hover:bg-[rgba(255,255,255,0.05)]"
-          )}
-          style={{ color: currentView === "connectors" ? "var(--brand-purple)" : "var(--text-secondary)" }}
-        >
-          <Plug size={18} />
-        </button>
-        <button
-          onClick={() => navigateTo("metatron")}
-          className={cn(
-            "mb-2 flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150",
-            currentView === "metatron"
-              ? "bg-[rgba(124,58,237,0.1)]"
-              : "hover:bg-[rgba(255,255,255,0.05)]"
-          )}
-          style={{ color: currentView === "metatron" ? "var(--brand-purple)" : "var(--text-secondary)" }}
-        >
-          <Hexagon size={18} />
-        </button>
+        {/* Logo icon */}
+        <div className="mb-4">
+          <Image src="/oa-logo.svg" alt="OurArk" width={28} height={28} />
+        </div>
+        <div className="mb-2 h-px w-6" style={{ backgroundColor: "var(--border-default)" }} />
+        {(
+          [
+            { view: "dashboard" as AppView, icon: <LayoutDashboard size={18} /> },
+            { view: "chat" as AppView, icon: <MessageSquare size={18} /> },
+            { view: "automations" as AppView, icon: <Zap size={18} /> },
+            { view: "connectors" as AppView, icon: <Plug size={18} /> },
+            { view: "metatron" as AppView, icon: <Hexagon size={18} /> },
+            { view: "settings" as AppView, icon: <Settings size={18} /> },
+          ]
+        ).map(({ view, icon }) => (
+          <button
+            key={view}
+            onClick={() => navigateTo(view)}
+            className={cn(
+              "mb-1.5 flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-200",
+              currentView === view
+                ? ""
+                : "hover:bg-[rgba(124,58,237,0.08)]"
+            )}
+            style={{
+              backgroundColor: currentView === view ? "rgba(124,58,237,0.12)" : undefined,
+              color: currentView === view ? "var(--brand-purple)" : "var(--text-muted)",
+            }}
+          >
+            {icon}
+          </button>
+        ))}
       </div>
     )
   }
@@ -196,17 +169,20 @@ export default function LeftSidebar() {
       className="flex h-full w-[260px] flex-col glass"
       style={{ borderRight: "1px solid var(--border-default)" }}
     >
-      {/* Header */}
+      {/* Header with logo */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center">
-          <Hexagon size={20} style={{ color: "var(--brand-purple)" }} className="mr-2" />
-          <span className="text-[14px] font-semibold" style={{ color: "var(--text-primary)" }}>
+          <Image src="/oa-logo.svg" alt="OurArk" width={24} height={24} className="mr-2.5" />
+          <span className="text-[15px] font-bold tracking-[-0.01em]" style={{ color: "var(--text-primary)" }}>
             OurArk
+          </span>
+          <span className="ml-1.5 text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>
+            AI
           </span>
         </div>
         <button
           onClick={toggleLeftSidebar}
-          className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-200 hover:bg-[rgba(124,58,237,0.08)]"
           style={{ color: "var(--text-muted)" }}
         >
           <PanelLeftClose size={16} />
@@ -216,7 +192,7 @@ export default function LeftSidebar() {
       {/* Search */}
       <div className="px-3 pb-2">
         <div
-          className="flex items-center rounded-lg px-3 py-2 transition-all duration-200"
+          className="flex items-center rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-[var(--border-focus)] focus-within:shadow-[0_0_0_3px_rgba(124,58,237,0.1)]"
           style={{
             backgroundColor: "var(--surface)",
             border: "1px solid var(--border-default)",
@@ -241,12 +217,7 @@ export default function LeftSidebar() {
             navigateTo("chat")
             setCurrentConversation(null)
           }}
-          className="flex w-full items-center justify-center rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150 active:scale-[0.97]"
-          style={{
-            backgroundColor: "rgba(124, 58, 237, 0.12)",
-            color: "var(--brand-purple)",
-            border: "1px solid rgba(124, 58, 237, 0.15)",
-          }}
+          className="btn-primary flex w-full items-center justify-center rounded-lg px-3 py-2 text-[13px]"
         >
           <Plus size={15} className="mr-1.5" />
           Neuer Chat
@@ -268,7 +239,7 @@ export default function LeftSidebar() {
                   navigateTo("chat")
                 }}
                 className={cn(
-                  "group relative flex cursor-pointer items-center rounded-lg px-3 py-2 transition-all duration-150",
+                  "group relative flex cursor-pointer items-center rounded-lg px-3 py-2 transition-all duration-200",
                   currentConversationId === conv.id
                     ? "border-l-2"
                     : "border-l-2 border-transparent hover:bg-[rgba(255,255,255,0.03)]"
@@ -320,7 +291,7 @@ export default function LeftSidebar() {
                       e.stopPropagation()
                       deleteConversation(conv.id)
                     }}
-                    className="ml-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded transition-colors duration-150 hover:bg-[rgba(239,68,68,0.1)]"
+                    className="ml-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded transition-colors duration-200 hover:bg-[rgba(239,68,68,0.1)]"
                     style={{ color: "var(--text-muted)" }}
                   >
                     <Trash2 size={12} />
@@ -337,7 +308,7 @@ export default function LeftSidebar() {
             {agents.slice(0, 4).map((agent) => (
               <div
                 key={agent.id}
-                className="flex cursor-pointer items-center rounded-lg px-3 py-2 transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+                className="flex cursor-pointer items-center rounded-lg px-3 py-2 transition-all duration-200 hover:bg-[rgba(255,255,255,0.03)]"
               >
                 <div className="relative mr-2.5 flex-shrink-0">
                   <Bot size={14} style={{ color: "var(--text-muted)" }} />
@@ -388,7 +359,7 @@ export default function LeftSidebar() {
                   key={item.id}
                   onClick={() => navigateTo(item.id)}
                   className={cn(
-                    "flex w-full items-center rounded-lg px-3 py-2 text-[13px] transition-all duration-150",
+                    "flex w-full items-center rounded-lg px-3 py-2 text-[13px] transition-all duration-200",
                     currentView === item.id
                       ? "border-l-2 font-medium"
                       : "border-l-2 border-transparent hover:bg-[rgba(255,255,255,0.03)]"
@@ -420,7 +391,7 @@ export default function LeftSidebar() {
         <div
           className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-semibold"
           style={{
-            backgroundColor: "rgba(124, 58, 237, 0.15)",
+            background: "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(99,102,241,0.2))",
             color: "var(--brand-purple)",
           }}
         >
@@ -436,7 +407,7 @@ export default function LeftSidebar() {
         </div>
         <button
           onClick={() => navigateTo("settings")}
-          className="flex h-7 w-7 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-200 hover:bg-[rgba(124,58,237,0.08)]"
           style={{ color: "var(--text-muted)" }}
         >
           <Settings size={14} />

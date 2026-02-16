@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 120" width="280" height="120">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Hexagon -->
+  <polygon
+    points="48,12 84.6,33 84.6,75 48,96 11.4,75 11.4,33"
+    fill="none"
+    stroke="url(#brandGrad)"
+    stroke-width="2.5"
+    filter="url(#glow)"
+  />
+  <!-- Cube lines -->
+  <line x1="48" y1="12" x2="48" y2="54" stroke="url(#brandGrad)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="11.4" y1="75" x2="48" y2="54" stroke="url(#brandGrad)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="84.6" y1="75" x2="48" y2="54" stroke="url(#brandGrad)" stroke-width="1.2" opacity="0.5"/>
+  <!-- Wordmark "OA" -->
+  <text x="108" y="68" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="48" letter-spacing="-2" fill="url(#brandGrad)">OA</text>
+</svg>

@@ -50,7 +50,7 @@ export default function WorkspaceView() {
               return (
                 <tr
                   key={m.id}
-                  className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                  className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                   style={{ borderBottom: "1px solid var(--border-subtle)" }}
                 >
                   <td className="px-4 py-3">
@@ -112,7 +112,7 @@ export default function WorkspaceView() {
             {apiKeys.map((k) => (
               <tr
                 key={k.id}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3">
@@ -128,7 +128,7 @@ export default function WorkspaceView() {
                     </code>
                     <button
                       onClick={() => setShowKeys((p) => ({ ...p, [k.id]: !p[k.id] }))}
-                      className="flex h-5 w-5 items-center justify-center rounded transition-colors duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+                      className="flex h-5 w-5 items-center justify-center rounded transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)]"
                       style={{ color: "var(--text-muted)" }}
                     >
                       {showKeys[k.id] ? <EyeOff size={12} /> : <Eye size={12} />}

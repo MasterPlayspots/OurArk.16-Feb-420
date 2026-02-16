@@ -79,7 +79,7 @@ export default function AutomationsView() {
             {automations.map((a) => (
               <tr
                 key={a.id}
-                className="transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
                 style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <td className="px-4 py-3">

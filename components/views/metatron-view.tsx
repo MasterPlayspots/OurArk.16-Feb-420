@@ -1,16 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import {
-  Hexagon,
-  Bot,
-  ArrowUp,
-  Plus,
-  Loader2,
-  Sparkles,
-  DollarSign,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { Hexagon, Bot } from "lucide-react"
 import { useAppStore } from "@/lib/store"
 import { classifyTaskForAgent } from "@/lib/agents/executor"
 
@@ -162,10 +153,8 @@ export default function MetatronView() {
             border: "1px solid rgba(124,58,237,0.15)",
           }}
         >
-          <Plus size={13} />
-          Neuer Agent
-        </button>
-      </div>
+          <Image src="/oa-logo.svg" alt="OurArk" width={32} height={32} />
+        </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Agent Network Visualization */}
@@ -242,7 +231,8 @@ export default function MetatronView() {
             {agents.map((a) => (
               <div
                 key={a.id}
-                className="flex items-center rounded-lg px-3 py-2 transition-all duration-150 hover:bg-[rgba(255,255,255,0.03)]"
+                className="transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
+                style={{ borderBottom: "1px solid var(--border-subtle)" }}
               >
                 <div className="relative mr-2.5 flex-shrink-0">
                   {a.ismaster ? <Hexagon size={14} style={{ color: "var(--brand-purple)" }} /> : <Bot size={14} style={{ color: "var(--text-muted)" }} />}

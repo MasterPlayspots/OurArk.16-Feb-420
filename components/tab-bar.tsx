@@ -35,7 +35,7 @@ export default function TabBar() {
               }
             }}
             className={cn(
-              "group relative flex h-[36px] max-w-[180px] cursor-pointer items-center rounded-t-lg px-3 transition-all duration-150",
+              "group relative flex h-[36px] max-w-[180px] cursor-pointer items-center rounded-t-lg px-3 transition-all duration-200",
               tab.active
                 ? "bg-[var(--ground)]"
                 : "hover:bg-[rgba(18,18,26,0.6)]"
@@ -45,7 +45,7 @@ export default function TabBar() {
             {tab.active && (
               <div
                 className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full"
-                style={{ backgroundColor: "var(--brand-purple)" }}
+                style={{ background: "linear-gradient(90deg, #7c3aed, #6366f1)" }}
               />
             )}
 
@@ -84,7 +84,7 @@ export default function TabBar() {
                   e.stopPropagation()
                   closeTab(tab.id)
                 }}
-                className="ml-1.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded opacity-0 transition-all duration-150 hover:bg-[rgba(255,255,255,0.1)] group-hover:opacity-100"
+                className="ml-1.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded opacity-0 transition-all duration-200 hover:bg-[rgba(255,255,255,0.1)] group-hover:opacity-100"
                 style={{ color: "var(--text-muted)" }}
               >
                 <X size={11} />
@@ -96,7 +96,7 @@ export default function TabBar() {
         {/* New tab button */}
         <button
           onClick={handleAddTab}
-          className="mb-1 ml-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md transition-all duration-150 hover:bg-[rgba(255,255,255,0.05)]"
+          className="mb-1 ml-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md transition-all duration-200 hover:bg-[rgba(255,255,255,0.05)]"
           style={{ color: "var(--text-muted)" }}
         >
           <Plus size={14} />

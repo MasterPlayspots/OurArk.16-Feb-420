@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Hexagon -->
+  <polygon
+    points="60,8 106.6,34 106.6,86 60,112 13.4,86 13.4,34"
+    fill="none"
+    stroke="url(#brandGrad)"
+    stroke-width="3"
+    filter="url(#glow)"
+  />
+  <!-- Cube inner lines -->
+  <line x1="60" y1="8" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1.5" opacity="0.5"/>
+  <line x1="13.4" y1="86" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1.5" opacity="0.5"/>
+  <line x1="106.6" y1="86" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1.5" opacity="0.5"/>
+  <!-- Cube face edges -->
+  <line x1="60" y1="112" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1" opacity="0.3"/>
+  <line x1="13.4" y1="34" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1" opacity="0.3"/>
+  <line x1="106.6" y1="34" x2="60" y2="60" stroke="url(#brandGrad)" stroke-width="1" opacity="0.3"/>
+</svg>
