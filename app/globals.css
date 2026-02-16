@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 210 20% 92%;
+    --card: 240 10% 7%;
+    --card-foreground: 210 20% 92%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 210 20% 92%;
+    --primary: 263 70% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 10% 10%;
+    --secondary-foreground: 210 20% 92%;
+    --muted: 240 10% 10%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 240 10% 10%;
+    --accent-foreground: 210 20% 92%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.06;
+    --input: 0 0% 100% / 0.06;
+    --ring: 263 70% 58%;
+    --radius: 0.5rem;
+
+    --chart-1: 263 70% 58%;
+    --chart-2: 234 89% 74%;
+    --chart-3: 142 71% 45%;
+    --chart-4: 47 96% 53%;
+    --chart-5: 0 84% 60%;
+
+    --sidebar-background: 240 10% 3.5%;
+    --sidebar-foreground: 215 20% 65%;
+    --sidebar-primary: 263 70% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 263 70% 58% / 0.1;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 0 0% 100% / 0.06;
+    --sidebar-ring: 263 70% 58%;
+
+    /* OurArk Design Tokens */
+    --void: #08080d;
+    --ground: #0a0a0f;
+    --surface: #12121a;
+    --elevated: #1a1a24;
+    --floating: #22222e;
+
+    --brand-purple: #7c3aed;
+    --brand-indigo: #6366f1;
+
+    --success: #22c55e;
+    --warning: #eab308;
+    --danger: #ef4444;
+    --info: #06b6d4;
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --border-default: rgba(255, 255, 255, 0.06);
+    --border-subtle: rgba(255, 255, 255, 0.03);
+    --border-accent: rgba(124, 58, 237, 0.15);
+    --border-focus: rgba(124, 58, 237, 0.40);
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: var(--void);
+    color: var(--text-primary);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.5);
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes orbGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.6);
+  }
+}
+
+@keyframes typingDot {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(124, 58, 237, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+  }
+}
+
+.animate-fade-slide-in {
+  animation: fadeSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-orb-glow {
+  animation: orbGlow 3s infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--elevated) 50%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
