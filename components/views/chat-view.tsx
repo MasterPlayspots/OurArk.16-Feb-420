@@ -35,8 +35,29 @@ const welcomeMessages = [
   "Du kannst auch einen Agenten beauftragen.",
 ]
 
+// Persist message to D1 database (fire-and-forget, non-blocking)
+function persistMessage(conversationId: string, msg: Message) {
+  fetch("/api/conversations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      conversationId,
+      message: {
+        id: msg.id,
+        role: msg.role,
+        content: msg.content,
+        model: msg.model,
+        inputTokens: msg.tokens?.input,
+        outputTokens: msg.tokens?.output,
+        cost: msg.cost,
+        routingReason: msg.routingReason,
+      },
+    }),
+  }).catch(() => {}) // Silently fail if DB not configured
+}
+
 export default function ChatView() {
-  const { messages, addMessage, currentConversationId, toggleAgentPanel } = useAppStore()
+  const { messages, addMessage, currentConversationId, addConversation, setCurrentConversation, toggleAgentPanel } = useAppStore()
   const [input, setInput] = useState("")
   const [selectedModel, setSelectedModel] = useState("auto")
   const [showModelSelector, setShowModelSelector] = useState(false)
@@ -46,6 +67,27 @@ export default function ChatView() {
   const handleSend = useCallback(async () => {
     if (!input.trim()) return
 
+    // Auto-create conversation if none selected
+    let convId = currentConversationId
+    if (!convId) {
+      convId = `conv-${Date.now()}`
+      const title = input.trim().slice(0, 60) + (input.trim().length > 60 ? "..." : "")
+      addConversation({
+        id: convId,
+        title,
+        lastMessage: "",
+        timestamp: "gerade eben",
+        model: selectedModel,
+      })
+      setCurrentConversation(convId)
+      // Persist new conversation to DB
+      fetch("/api/conversations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: convId, title, model: selectedModel }),
+      }).catch(() => {})
+    }
+
     const userMsg: Message = {
       id: `msg-${Date.now()}`,
       role: "user",
@@ -53,6 +95,7 @@ export default function ChatView() {
       timestamp: new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }),
     }
     addMessage(userMsg)
+    persistMessage(convId, userMsg)
     setInput("")
     setIsTyping(true)
 
@@ -86,6 +129,7 @@ export default function ChatView() {
         routingReason: data.routingReason,
       }
       addMessage(assistantMsg)
+      persistMessage(convId, assistantMsg)
     } catch (error) {
       const errorMsg: Message = {
         id: `msg-${Date.now() + 1}`,
@@ -98,7 +142,7 @@ export default function ChatView() {
     } finally {
       setIsTyping(false)
     }
-  }, [input, selectedModel, addMessage, messages])
+  }, [input, selectedModel, addMessage, messages, currentConversationId, addConversation, setCurrentConversation])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
