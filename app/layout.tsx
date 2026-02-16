@@ -1,14 +1,9 @@
 import type { Metadata, Viewport } from "next"
-import localFont from "next/font/local"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 
-const inter = localFont({
-  src: [
-    {
-      path: "../public/fonts/Inter-Variable.woff2",
-      style: "normal",
-    },
-  ],
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
 })
