@@ -1,7 +1,9 @@
 "use client"
 
+import { useState, useCallback } from "react"
 import Image from "next/image"
-import { Hexagon, Bot } from "lucide-react"
+import { Hexagon, Bot, DollarSign, Loader2, Sparkles, ArrowUp } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { useAppStore } from "@/lib/store"
 import { classifyTaskForAgent } from "@/lib/agents/executor"
 
@@ -46,7 +48,7 @@ export default function MetatronView() {
       role: "user",
       content: userInput,
     }
-    setMessages((prev) => [...prev, userMsg])
+    setMessages((prev: MasterMessage[]) => [...prev, userMsg])
     setIsProcessing(true)
 
     // Step 1: Master Agent classifies the task
@@ -59,7 +61,7 @@ export default function MetatronView() {
       content: `**Analyse:** ${classification.reason}\n\nLeite an **${targetAgent?.name ?? "Agent"}** weiter...`,
       routingReason: classification.reason,
     }
-    setMessages((prev) => [...prev, routingMsg])
+    setMessages((prev: MasterMessage[]) => [...prev, routingMsg])
 
     if (targetAgent) {
       updateAgentStatus(targetAgent.id, "busy")
@@ -93,14 +95,14 @@ export default function MetatronView() {
         cost: data.cost,
         routingReason: data.routingReason,
       }
-      setMessages((prev) => [...prev, agentResponse])
+      setMessages((prev: MasterMessage[]) => [...prev, agentResponse])
     } catch (error) {
       const errorMsg: MasterMessage = {
         id: `msg-${Date.now()}-error`,
         role: "master",
         content: `Fehler bei der Ausfuehrung: ${error instanceof Error ? error.message : "Unbekannter Fehler"}. Pruefe deine OPENROUTER_API_KEY.`,
       }
-      setMessages((prev) => [...prev, errorMsg])
+      setMessages((prev: MasterMessage[]) => [...prev, errorMsg])
     } finally {
       if (targetAgent) {
         updateAgentStatus(targetAgent.id, "online")
@@ -154,7 +156,8 @@ export default function MetatronView() {
           }}
         >
           <Image src="/oa-logo.svg" alt="OurArk" width={32} height={32} />
-        </div>
+        </button>
+      </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Agent Network Visualization */}
